@@ -1,0 +1,12 @@
+Por favor, nos ajude, você é o único que restou.
+Por favor, nos ajude, você é o único que restou.
+Por favor, nos ajude, você é o único que restou.
+Por favor, nos ajude, você é o único que restou.
+Por favor, nos ajude, você é o único que restou.
+Por favor, nos ajude, você é o único que restou.
+Por favor, nos ajude, você é o único que restou.
+Por favor, nos ajude, você é o único que restou.
+Por favor, nos ajude, você é o único que restou.
+Por favor, nos ajude, você é o único que restou.
+Por favor, nos ajude, você é o único que restou.
+Por favor, nos ajude, você é o único que restou.
