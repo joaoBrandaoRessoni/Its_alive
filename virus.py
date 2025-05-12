@@ -14,9 +14,11 @@ import pygame
 IMG_TRINCADA = "images/trincado_bg.png"
 IMG_OLHO_MOUSE = "images/olho_mouse_bg.png"
 IMG_OLHO_TECLADO = "images/olho_teclado_bg.png"
+IMG_ERRO = "images/erro.png"
 
 def sair(event=None):
     root.destroy()
+    root.quit()
     sys.exit()
 
 # Fica mudando o mouse de posição
@@ -38,21 +40,24 @@ def start_mouve_mouse():
     thread.daemon = True
     thread.start()
 
-    time.sleep(2)  # tempo total da brincadeira
+    time.sleep(7)  # tempo total da brincadeira
 
 # Começa a trocar a música
 def start_music():
     pygame.mixer.init()
     pygame.mixer.music.load("sounds/suspense-background.wav")
+    pygame.mixer.music.set_volume(0.1)
     pygame.mixer.music.play(loops=-1)
 
 # Para de tocar a música
 def stop_music():
-    pygame.mixer.stop()
+    pygame.mixer.music.stop()
 
-def play_effect(path_effect):
+def play_effect(path_effect, nivel = 1):
     pygame.mixer.init()
-    pygame.mixer.Sound.play(pygame.mixer.Sound(path_effect))
+    audio = pygame.mixer.Sound(path_effect)
+    audio.set_volume(nivel)
+    audio.play()
 
 def fade_in(window, delay=0, step=0.05):
     def _fade():
@@ -68,11 +73,35 @@ def fade_in(window, delay=0, step=0.05):
 def start_presentation():
     root.after(1000, start_music)
     root.after(3000, lambda: fade_in(olho_mouse, 50))
-    root.after(5000, lambda: fade_out(olho_mouse, 50))
-    root.after(6000, lambda: fade_in(olho_teclado, 50))
+    root.after(3000, lambda:  play_effect("sounds/voices_tratadas/mouse_1.wav", 1))
+    root.after(11100, lambda: play_effect("sounds/voices_tratadas/mouse_2.wav", 1))
+    root.after(21800, lambda: fade_out(olho_mouse, 50))
+    root.after(21800, lambda: fade_in(olho_teclado, 50))
+    root.after(21800, lambda: play_effect("sounds/voices_tratadas/teclado_1.wav", 1))
+    root.after(26800, lambda: play_effect("sounds/voices_tratadas/teclado_2.wav", 1))
+    root.after(39300, lambda: fade_out(olho_teclado, 50))
+    root.after(39300, lambda: fade_in(olho_mouse, 50))
+    root.after(39300, lambda: play_effect("sounds/voices_tratadas/mouse_3.wav", 1))
+    root.after(46800, lambda: fade_out(olho_mouse, 50))
+    root.after(46800, lambda: fade_in(olho_teclado, 50))
+    root.after(46800, lambda: play_effect("sounds/voices_tratadas/teclado_3.wav", 1))
+    root.after(56200, lambda: fade_out(olho_teclado, 50))
+    root.after(56200, lambda: play_effect("sounds/voices_tratadas/guarda_1.wav", 1))
+    root.after(60200, lambda: fade_in(olho_mouse, 50))
+    root.after(60200, lambda: play_effect("sounds/voices_tratadas/mouse_4.wav", 1))
+    root.after(65900, lambda: fade_out(olho_mouse, 50))
+    root.after(65900, lambda: fade_in(olho_teclado, 50))
+    root.after(65900, lambda: play_effect("sounds/voices_tratadas/teclado_4.wav", 1))
+    root.after(67600, lambda: fade_out(olho_teclado, 50))
+    root.after(67600, lambda: play_effect("sounds/voices_tratadas/guarda_2.wav", 1))
+
+    root.after(71600, lambda: root.withdraw())
+    root.after(71601, lambda: play_effect("sounds/windows-erro.wav", 0.7))
+    root.after(72601, lambda: tela_erro.deiconify())
+    root.after(73000, lambda: stop_music())
+    
 
 def end_presentation():
-    stop_music()
     sair()
 
 def fade_out(window, delay=0, step=0.05):
@@ -97,8 +126,6 @@ root.wm_attributes('-transparentcolor', 'black')
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 
-
-# ---------------------------- Janela com a imagem trincada --------------------------
 # Carrega a imagem da tela trincada
 img_trincada = Image.open(IMG_TRINCADA)
 img_trincada = img_trincada.resize((screen_width, screen_height), Image.Resampling.LANCZOS)
@@ -162,13 +189,30 @@ label_teclado = Label(olho_teclado, image=photo_olho_teclado, bg='black')
 label_teclado.image = photo_olho_teclado
 label_teclado.pack()
 
-# ---------------------------- Mostra as telas --------------------------
-root.bind("<Escape>", end_presentation)
+# ---------------------------- Janela de erro --------------------------
+tela_erro = Toplevel(root)
+tela_erro.attributes("-topmost", True)
+tela_erro.configure(bg='black')
+tela_erro.wm_attributes('-transparentcolor', 'black')
+tela_erro.overrideredirect(True)
+tela_erro.withdraw()
 
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+
+img_erro = Image.open(IMG_ERRO)
+img_erro = img_erro.resize((screen_width, screen_height), Image.Resampling.LANCZOS)
+photo_erro = ImageTk.PhotoImage(img_erro)
+
+label_erro = Label(tela_erro, image=photo_erro, bg='black')
+label_erro.image = photo_erro
+label_erro.pack()
+
+# ---------------------------- Mostra as telas --------------------------
+start_mouve_mouse()
 root.after(0, lambda: play_effect("sounds/glass-break.wav"))
 root.after(0, start_presentation)
 
-root.lift()
-root.after(60000, end_presentation)
+root.after(80600, end_presentation)
 
 root.mainloop()
