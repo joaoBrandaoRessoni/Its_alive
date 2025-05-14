@@ -40,7 +40,7 @@ def start_mouve_mouse():
     thread.daemon = True
     thread.start()
 
-    time.sleep(7)  # tempo total da brincadeira
+    time.sleep(1.5)  # tempo total da brincadeira
 
 # Começa a trocar a música
 def start_music():
@@ -209,7 +209,6 @@ label_erro.image = photo_erro
 label_erro.pack()
 
 # ---------------------------- Mostra as telas --------------------------
-start_mouve_mouse()
 root.after(0, lambda: play_effect("sounds/glass-break.wav"))
 root.after(0, start_presentation)
 
